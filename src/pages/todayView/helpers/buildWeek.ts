@@ -7,7 +7,7 @@ export const buildWeek = () => {
   let thisWeek: IDay[] = [];
   //The day of the week, with Sunday as 0
   const weekDay = dayjs().format("d");
-  for (let day = Number(weekDay); day >= 0; day--) {
+  for (let day = Number(weekDay); day >= 1; day--) {
     const dayValue = dayjs().subtract(Number(weekDay) - day, "day");
     const dayName = dayValue.format("ddd");
     const monthDay = dayValue.format("D");
@@ -19,7 +19,7 @@ export const buildWeek = () => {
       fullDate,
     });
   }
-  for (let day = Number(weekDay); day <= 6; day++) {
+  for (let day = Number(weekDay); day <= 7; day++) {
     const dayValue = dayjs().add(day - Number(weekDay), "day");
     const fullDate = dayValue.format("YYYY-MM-DD");
     const dayName = dayValue.format("ddd");

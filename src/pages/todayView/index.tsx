@@ -10,8 +10,7 @@ import { setActiveDay } from "../../store/slices/toDoSlice";
 
 export const TodayView = () => {
   const dispatch = useAppDispatch();
-  const { planner } = useAppSelector((st) => st.todo);
-  const [date, setDate] = useState<Date[] | Date>(new Date());
+  const { planner, activeDay } = useAppSelector((st) => st.todo);
   const [toggleCalendar, setToggleCalendar] = useState(false);
   const [isATMinified, setIsATMinified] = useState(true);
   const [isDesk, setisDesk] = useState(false);
@@ -28,39 +27,43 @@ export const TodayView = () => {
   useEffect(() => {
     if (!!window && window.innerWidth > 768) setisDesk(true);
     else setisDesk(false);
-
-    const monthlyTasks = Object.keys(planner).map((t) => dayjs(t).toDate());
-    setDate(monthlyTasks);
   }, []);
 
   const dateTemplate = (SelectedDateInCalendar: any) => {
-    if (
+    const { day, month, year } = SelectedDateInCalendar;
+
+    if (`${year}-${month + 1}-${day < 10 ? `0${day}` : day}` === activeDay) {
+      return <div className={`CalendarActiveDay`}>{day}</div>;
+    } else if (
       Object.keys(planner)
         .map((d) => Number(dayjs(d).format("DD")))
-        .includes(SelectedDateInCalendar.day) &&
-      SelectedDateInCalendar.month === Number(dayjs().format("MM")) - 1
+        .includes(day) &&
+      month === Number(dayjs().format("MM")) - 1
     ) {
-      return <div className="CalendarCircle">{SelectedDateInCalendar.day}</div>;
+      return <div className={`CalendarCircle`}>{day}</div>;
     } else {
-      return SelectedDateInCalendar.day;
+      return day;
     }
   };
 
   return (
     <div className="TodayView">
       <Row>
-        <Col xs={12} md={6} lg={4}>
+        <Col xs={12} md={6} lg={5} xl={4}>
           {!toggleCalendar && !isDesk ? (
             <LineCalendar />
           ) : (
-            <Calendar
-              inline
-              value={date}
-              onSelect={handleActiveDay}
-              dateTemplate={dateTemplate}
-              className="todayViewCalendar"
-              onChange={(e) => setDate(e.value as Date)}
-            ></Calendar>
+            <div className="mainCalendar">
+              <Calendar
+                inline
+                selectOtherMonths={true}
+                value={new Date()}
+                monthNavigator={false}
+                onSelect={handleActiveDay}
+                dateTemplate={dateTemplate}
+                className="todayViewCalendar"
+              ></Calendar>
+            </div>
           )}
           {!isDesk && (
             <div className="d-flex justify-content-center">
@@ -76,7 +79,7 @@ export const TodayView = () => {
             </div>
           )}
         </Col>
-        <Col xs={12} md={6} lg={8} className="noPadding">
+        <Col xs={12} md={6} lg={7} xl={8} className="noPadding">
           <ActiveTasks
             isATMinified={isATMinified}
             setIsATMinified={setIsATMinified}

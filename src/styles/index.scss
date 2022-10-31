@@ -87,47 +87,61 @@
     transform: translateY(0px);
   }
 }
-
-.p-calendar.todayViewCalendar {
-  width: 100%;
-  .p-datepicker.p-component.p-datepicker-inline {
-    background-color: transparent;
-    color: #fff;
-    border: none;
-    .p-datepicker-group-container {
-      .p-datepicker-group {
-        .p-datepicker-header {
-          background-color: transparent;
-          border: none;
-          .p-datepicker-prev,
-          .p-datepicker-title,
-          .p-datepicker-next {
-            color: #fff;
-            .p-datepicker-month.p-link,
-            .p-datepicker-year.p-link {
-              font-size: 24px;
-              font-weight: 400;
+.mainCalendar {
+  position: relative;
+  h4 {
+    font-weight: 600;
+    font-size: 24px;
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+  }
+  .p-calendar.todayViewCalendar {
+    width: 100%;
+    .p-datepicker.p-component.p-datepicker-inline {
+      background-color: transparent;
+      color: #fff;
+      border: none;
+      .p-datepicker-group-container {
+        .p-datepicker-group {
+          .p-datepicker-header {
+            background-color: transparent;
+            border: none;
+            .p-datepicker-prev,
+            .p-datepicker-title,
+            .p-datepicker-next {
               color: #fff;
+              .p-datepicker-month.p-link,
+              .p-datepicker-year.p-link {
+                font-size: 24px;
+                font-weight: 400;
+                color: #fff;
+                //display: none;
+              }
             }
           }
-        }
-        .p-datepicker-calendar-container {
-          .p-datepicker-calendar {
-            thead {
-              tr {
-                th {
-                  text-align: center;
+          .p-datepicker-calendar-container {
+            .p-datepicker-calendar {
+              thead {
+                tr {
+                  th {
+                    text-align: center;
+                  }
                 }
               }
             }
           }
-        }
-        @media (min-width: 770px) {
-          .p-datepicker-calendar-container {
-            .p-datepicker-calendar {
-              tbody {
-                td {
-                  padding: 4px;
+          @media (min-width: 770px) {
+            .p-datepicker-calendar-container {
+              .p-datepicker-calendar {
+                tbody {
+                  td {
+                    padding: 4px;
+                  }
                 }
               }
             }
@@ -143,12 +157,12 @@
   left: 0px;
   bottom: 0px;
   width: 100%;
-  padding: 0px 16px 20px;
+  padding: 0px 16px 80px;
   margin: 0px;
   border-radius: 46px 46px 0px 0px;
   background-color: lighten($primary, 46%);
   color: #000;
-  height: calc(100vh - 170px);
+  height: calc(100vh - 180px);
   @media (min-width: 770px) {
     position: initial;
     width: 100%;
@@ -372,7 +386,8 @@
   z-index: 10000 !important;
 }
 
-.CalendarCircle {
+.CalendarCircle,
+.CalendarActiveDay {
   background-color: $primary;
   width: 2.5em;
   height: 2.5em;
@@ -380,6 +395,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.CalendarActiveDay {
+  background-color: $secondary;
 }
 .notasksRow {
   display: flex;

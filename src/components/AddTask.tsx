@@ -21,12 +21,12 @@ export const AddTask: FC<ITaskForm> = ({
 }) => {
   const toast = useRef<Toast>(null);
   const dispatch = useAppDispatch();
-  const { categories } = useAppSelector((state) => state.todo);
+  const { categories, activeDay } = useAppSelector((state) => state.todo);
   const [dueHour, setdueHour] = useState(14);
   const [dueMins, setdueMins] = useState(30);
   const [date, setDate] = useState(new Date());
   const [taskTitle, settaskTitle] = useState("");
-  const [taskDate, settaskDate] = useState("today");
+  const [taskDate, settaskDate] = useState("activeDay");
   const [selectedCategories, setselectedCategories] = useState<
     { name: string }[]
   >([{ name: "Design" }]);
@@ -34,7 +34,8 @@ export const AddTask: FC<ITaskForm> = ({
   const dueItems = [
     { label: "Today", value: "today" },
     { label: "Tomorrow", value: "tomorrow" },
-    { label: "Custom", value: "custom" },
+    { label: "active day", value: "activeDay" },
+    //{ label: "Custom", value: "custom" },
   ];
 
   const toastError = (summary: string, detail: string) => {
@@ -76,7 +77,7 @@ export const AddTask: FC<ITaskForm> = ({
     if (taskDate === "today") formatedDate = dayjs().format("YYYY-MM-DD");
     else if (taskDate === "tomorrow")
       formatedDate = dayjs().add(1, "day").format("YYYY-MM-DD");
-    else formatedDate = dayjs(date).format("YYYY-MM-DD");
+    else formatedDate = activeDay;
 
     dispatch(
       addTask({
@@ -84,7 +85,7 @@ export const AddTask: FC<ITaskForm> = ({
         task,
       })
     );
-
+    settaskTitle("");
     setShowCreateTask(false);
     toast.current?.show({
       severity: "success",

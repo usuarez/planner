@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { setActiveDay } from "../../../store/slices/toDoSlice";
 import { buildWeek, weekDays } from "../helpers/buildWeek";
 
 export interface IDay {
@@ -10,10 +12,13 @@ export interface IDay {
 }
 
 export const LineCalendar = () => {
+  const dispatch = useAppDispatch();
+  const { planner, activeDay } = useAppSelector((st) => st.todo);
   const week: IDay[] = buildWeek();
-  const [activeDay, setActiveDay] = useState<string>();
-  const handleActiveDay = (day: string) => {
-    setActiveDay(day);
+  const [activeLineDay, setActiveLineDay] = useState<string>();
+  const handleActiveLineDay = (day: string) => {
+    dispatch(setActiveDay({ date: `${dayjs().format("YYYY-MM")}-${day}` }));
+    setActiveLineDay(day);
   };
   return (
     <>
@@ -36,9 +41,9 @@ export const LineCalendar = () => {
                   {wd}
                 </span>
                 <Button
-                  onClick={() => handleActiveDay(day!.monthDay)}
+                  onClick={() => handleActiveLineDay(day!.monthDay)}
                   className={`LineButton ${
-                    activeDay === day!.monthDay ? "ActiveDay" : ""
+                    activeLineDay === day!.monthDay ? "ActiveDay" : ""
                   }
                   ${
                     day?.fullDate === dayjs().format("YYYY-MM-DD")
